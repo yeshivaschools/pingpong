@@ -1,5 +1,5 @@
 # pingpong
-#### 2D pingpong game
+#### 2D Ping Pong game
 ___
 ### How to play:
 * player 1
