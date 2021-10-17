@@ -1,6 +1,11 @@
-# import json
+import json
 import sys
 import pygame
+
+with open("settings.json") as file:
+    settings = json.load(file)
+
+print(settings)
 
 pygame.init()
 
@@ -28,10 +33,14 @@ while True:
             sys.exit()
 
     keys = pygame.key.get_pressed()
-    if keys["K_UP"] and p2_position >= 50:
+    if keys[pygame.K_UP] and p2_position >= 50:
         p2_position += speed
-    if keys["K_DOWN"] and p2_position <= height - 50:
+    if keys[pygame.K_DOWN] and p2_position <= height - 50:
         p2_position -= speed
+    if keys[pygame.K_w] and p1_position >= 50:
+        p1_position += speed
+    if keys[pygame.K_w] and p1_position <= height - 50:
+        p1_position -= speed
     
     pygame.display.flip()
     clock.tick(60)
