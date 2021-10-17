@@ -1,5 +1,6 @@
 import json
 import sys
+import random
 import pygame
 
 with open("settings.json") as file:
@@ -28,11 +29,12 @@ p2_paddle_width = settings["paddle"]["p2"]["width"]
 p2_paddle_height = settings["paddle"]["p2"]["height"]
 
 # Positions
+serve = 0
 p1_position = (height / 2) - (p1_paddle_height / 2)
 p2_position = (height / 2) - (p2_paddle_height / 2)
 ball_position = [width / 2, height / 2]
 ball_x_direction = 0 # 0 for left, 1 for right
-ball_y_direction = 0 # 0 for down, 1 for up
+ball_y_direction = random.randint(0, 1) # 0 for down, 1 for up
 
 # Score
 p1_score = 0
@@ -66,10 +68,39 @@ while True:
     else:
         ball_position[1] += speed
 
-    if ball_position[0] == 0:
+    if ball_x_direction:
+        ball_position[0] -= speed
+    else:
+        ball_position[0] += speed
+
+    if ball_position[0] <= 0:
         p2_score += 1
-    if ball_position[0] == width:
+
+        ball_y_direction = random.randint(0, 1)
+        ball_position = [width / 2, height / 2]
+
+        # Handle serve
+        if serve:
+            serve = 0
+        else:
+            serve = 1
+        ball_x_direction = serve
+    if ball_position[0] >= width:
         p1_score += 1
+
+        ball_y_direction = random.randint(0, 1)
+        ball_position = [width / 2, height / 2]
+
+        # Handle serve
+        if serve:
+            serve = 0
+        else:
+            serve = 1
+        ball_x_direction = serve
+
+    # Handle ball & paddle interaction
+    # if ball_position[0] <= 5 + p1_paddle_width and p1_position <= ball_position[1] and p1_position + p1_paddle_height >= ball_position[1]:
+    #     ball_x_direction = 1
 
     # Board
     screen.fill("black")
