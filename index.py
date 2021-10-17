@@ -7,15 +7,10 @@ with open("settings.json") as file:
     settings = json.load(file)
 
 pygame.init()
-# pygame.font.init()
-
 clock = pygame.time.Clock()
-
 screen = pygame.display.set_mode((settings["width"], settings["height"]))
 pygame.display.set_caption("Pong", "aroary")
-
 width, height = pygame.display.get_surface().get_size()
-
 font = pygame.font.SysFont("Sans Sheriff", 50)
 
 # Settings
@@ -40,11 +35,22 @@ ball_y_direction = random.randint(0, 1) # 0 for down, 1 for up
 p1_score = 0
 p2_score = 0
 
+# How to play
+print('''
+player 1:
+  w To move up
+  s To move Down
+player 2:
+  up To move up
+  down To move Down
+''')
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+            break
 
     # User motion
     keys = pygame.key.get_pressed()
@@ -99,8 +105,10 @@ while True:
         ball_x_direction = serve
 
     # Handle ball & paddle interaction
-    # if ball_position[0] <= 5 + p1_paddle_width and p1_position <= ball_position[1] and p1_position + p1_paddle_height >= ball_position[1]:
-    #     ball_x_direction = 1
+    if ball_position[0] <= 5 + p1_paddle_width + radius / 2 and p1_position - radius / 2 <= ball_position[1] and p1_position + p1_paddle_height + radius / 2 >= ball_position[1]:
+        ball_x_direction = 0
+    if ball_position[0] >= width - 5 - p1_paddle_width - radius / 2 and p2_position - radius / 2 <= ball_position[1] and p2_position + p2_paddle_height + radius / 2 >= ball_position[1]:
+        ball_x_direction = 1
 
     # Board
     screen.fill("black")
