@@ -1,5 +1,20 @@
 {
-    "width": 600,
-    "height":400,
-    "speed": 2
+    "width": 500,
+    "height":300,
+    "ball": {
+        "speed": 3,
+        "radius": 15
+    },
+    "paddle": {
+        "p1": {
+            "width": 5,
+            "height": 50,
+            "speed": 4
+        },
+        "p2": {
+            "width": 5,
+            "height": 50,
+            "speed": 4
+        }
+    }
 }
