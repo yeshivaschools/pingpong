@@ -6,13 +6,16 @@ with open("settings.json") as file:
     settings = json.load(file)
 
 pygame.init()
+# pygame.font.init()
 
 clock = pygame.time.Clock()
 
 screen = pygame.display.set_mode((settings["width"], settings["height"]))
-pygame.display.set_caption("Pong")
+pygame.display.set_caption("Pong", "aroary")
 
 width, height = pygame.display.get_surface().get_size()
+
+font = pygame.font.SysFont("Sans Sheriff", 50)
 
 # Settings
 speed = settings["ball"]["speed"]
@@ -78,6 +81,10 @@ while True:
     # Players
     pygame.draw.rect(screen, "white", pygame.Rect(p1_paddle_width, p1_position, 5, 50))
     pygame.draw.rect(screen, "white", pygame.Rect(width - p2_paddle_width * 2, p2_position, 5, 50))
+
+    # Score
+    screen.blit(font.render(str(p1_score), False, "white"), (width / 4 - 25, 0))
+    screen.blit(font.render(str(p2_score), False, "white"), ((width / 4) * 3 + 10, 0))
 
     # Ball
     pygame.draw.circle(screen, "yellow", (ball_position[0], ball_position[1]), radius)
