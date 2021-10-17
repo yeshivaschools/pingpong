@@ -31,6 +31,10 @@ ball_position = [width / 2, height / 2]
 ball_x_direction = 0 # 0 for left, 1 for right
 ball_y_direction = 0 # 0 for down, 1 for up
 
+# Score
+p1_score = 0
+p2_score = 0
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -59,9 +63,17 @@ while True:
     else:
         ball_position[1] += speed
 
+    if ball_position[0] == 0:
+        p2_score += 1
+    if ball_position[0] == width:
+        p1_score += 1
+
     # Board
     screen.fill("black")
     pygame.draw.rect(screen, "white",pygame.Rect(width / 2 - 5, 0, 10, height))
+    pygame.draw.circle(screen, "white", (width / 2, height / 2), 100)
+    pygame.draw.circle(screen, "black", (width / 2, height / 2), 90)
+    pygame.draw.circle(screen, "white", (width / 2, height / 2), 10)
 
     # Players
     pygame.draw.rect(screen, "white", pygame.Rect(p1_paddle_width, p1_position, 5, 50))

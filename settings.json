@@ -3,7 +3,7 @@
     "height":300,
     "ball": {
         "speed": 3,
-        "radius": 15
+        "radius": 12
     },
     "paddle": {
         "p1": {
