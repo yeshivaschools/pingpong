@@ -27,6 +27,7 @@
         { "type": "b", "value": "r*2" },
         { "type": "b", "value": "r/2" },
         { "type": "b", "value": "s*2" },
-        { "type": "b", "value": "s/2" }
+        { "type": "b", "value": "s/2" },
+        { "type": "s", "value": null}
     ]
 }
