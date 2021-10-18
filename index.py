@@ -143,7 +143,7 @@ while True:
 
     # Players
     pygame.draw.rect(screen, "white", pygame.Rect(5, p1_position, p1_paddle_width, p1_paddle_height), 0, 0, 0, 10, 0, 10)
-    pygame.draw.rect(screen, "white", pygame.Rect(width - p2_paddle_width - 5, p2_position, p1_paddle_width, p2_paddle_height), 0, 0, 10, 0, 10, 0)
+    pygame.draw.rect(screen, "white", pygame.Rect(width - p2_paddle_width - 5, p2_position, p2_paddle_width, p2_paddle_height), 0, 0, 10, 0, 10, 0)
 
     # Score
     screen.blit(font.render(str(p1_score), False, "white"), (width / 4 - 25, 0))
