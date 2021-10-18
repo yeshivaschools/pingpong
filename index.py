@@ -59,10 +59,18 @@ while True:
         #     paused = True
 
     # User motion
-    if keys[pygame.K_UP] and p2_position >= 0:
-        p2_position -= p2_paddle_speed
-    if keys[pygame.K_DOWN] and p2_position <= height - p2_paddle_height:
-        p2_position += p2_paddle_speed
+    if settings["robot"]:
+        if ball_position[0] >= width / 2:
+            if p2_position + p2_paddle_height / 2 > ball_position[1] and p2_position > 0:
+                p2_position -= p2_paddle_speed
+            if p2_position + p2_paddle_height / 2 < ball_position[1] and p2_position + p2_paddle_height < height:
+                p2_position += p2_paddle_speed
+    else:
+        if keys[pygame.K_UP] and p2_position >= 0:
+            p2_position -= p2_paddle_speed
+        if keys[pygame.K_DOWN] and p2_position <= height - p2_paddle_height:
+            p2_position += p2_paddle_speed
+
     if keys[pygame.K_w] and p1_position >= 0:
         p1_position -= p1_paddle_speed
     if keys[pygame.K_s] and p1_position <= height - p1_paddle_height:

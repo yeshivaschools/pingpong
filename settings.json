@@ -3,6 +3,7 @@
     "height": 300,
     "audio": true,
     "volume": 0.5,
+    "robot": true,
     "ball": {
         "speed": 3,
         "radius": 12
