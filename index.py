@@ -13,6 +13,10 @@ pygame.display.set_caption("Pong", "aroary")
 width, height = pygame.display.get_surface().get_size()
 font = pygame.font.SysFont("Sans Sheriff", 50)
 
+# Audio
+# pygame.mixer.music.load("effect.mp3")
+# pygame.mixer.music.set_volume(.5)
+
 # Settings
 speed = settings["ball"]["speed"]
 radius = settings["ball"]["radius"]
@@ -37,16 +41,6 @@ paused = True
 p1_score = 0
 p2_score = 0
 
-# How to play
-print('''
-player 1:
-  w To move up
-  s To move Down
-player 2:
-  up To move up
-  down To move Down
-''')
-
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -59,8 +53,8 @@ while True:
     if keys[pygame.K_p]:
         if paused:
             paused = False
-        else:
-            paused = True
+        # else:
+        #     paused = True
 
     if not paused:
         # User motion
@@ -73,12 +67,7 @@ while True:
         if keys[pygame.K_s] and p1_position <= height - p1_paddle_height:
             p1_position += p1_paddle_speed
 
-        # Ball motion
-        if ball_position[1] <= 0:
-            ball_y_direction = 0
-        if ball_position[1] >= height:
-            ball_y_direction = 1
-
+        # Ball horizontal movement
         if ball_y_direction:
             ball_position[1] -= vertical_speed
         else:
@@ -89,36 +78,36 @@ while True:
         else:
             ball_position[0] += speed
 
+    # Ball motion
+    if ball_position[1] <= 0:
+        ball_y_direction = 0
+    if ball_position[1] >= height:
+        ball_y_direction = 1
+
     # Handle scoring
     if ball_position[0] <= 0:
         p2_score += 1
-
         ball_y_direction = random.randint(0, 1)
         ball_position = [width / 2, height / 2]
         vertical_speed = speed
-
         # Handle serve
         if serve:
             serve = 0
         else:
             serve = 1
         ball_x_direction = serve
-
         paused = True
     if ball_position[0] >= width:
         p1_score += 1
-
         ball_y_direction = random.randint(0, 1)
         ball_position = [width / 2, height / 2]
         vertical_speed = speed
-
         # Handle serve
         if serve:
             serve = 0
         else:
             serve = 1
         ball_x_direction = serve
-
         paused = True
 
     # Handle ball & paddle interaction
@@ -132,6 +121,7 @@ while True:
             ball_y_direction = 0
         else:
             vertical_speed -= .5
+        # pygame.mixer.music.play()
     if ball_position[0] >= width - 5 - p1_paddle_width - radius / 2 and p2_position - radius / 2 <= ball_position[1] and p2_position + p2_paddle_height + radius / 2 >= ball_position[1]:
         ball_x_direction = 1
         if ball_position[1] >= p2_position - radius / 2 and ball_position[1] <= p2_position - radius / 2 + 15:
@@ -142,6 +132,7 @@ while True:
             ball_y_direction = 0
         else:
             vertical_speed -= .5
+        # pygame.mixer.music.play()
 
     # Board
     screen.fill("black")
