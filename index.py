@@ -141,8 +141,8 @@ while True:
     # Board
     screen.fill("black")
     pygame.draw.rect(screen, "white",pygame.Rect(width / 2 - 5, 0, 10, height))
-    pygame.draw.circle(screen, "white", (width / 2, height / 2), 100)
-    pygame.draw.circle(screen, "black", (width / 2, height / 2), 90)
+    pygame.draw.circle(screen, "white", (width / 2, height / 2), height / 4)
+    pygame.draw.circle(screen, "black", (width / 2, height / 2), height / 4 - 10)
     pygame.draw.circle(screen, "white", (width / 2, height / 2), 10)
 
     # Players
