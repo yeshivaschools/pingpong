@@ -14,7 +14,7 @@ width, height = pygame.display.get_surface().get_size()
 font = pygame.font.SysFont("Sans Sheriff", 50)
 
 # Audio
-pygame.mixer.music.load("effect.mp3")
+pygame.mixer.music.load("effects.mp3")
 pygame.mixer.music.set_volume(.5)
 
 # Settings

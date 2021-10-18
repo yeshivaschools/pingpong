@@ -1,6 +1,7 @@
 {
     "width": 500,
     "height": 300,
+    "buff": true,
     "ball": {
         "speed": 3,
         "radius": 12
