@@ -14,8 +14,8 @@ width, height = pygame.display.get_surface().get_size()
 font = pygame.font.SysFont("Sans Sheriff", 50)
 
 # Audio
-# pygame.mixer.music.load("effect.mp3")
-# pygame.mixer.music.set_volume(.5)
+pygame.mixer.music.load("effect.mp3")
+pygame.mixer.music.set_volume(.5)
 
 # Settings
 speed = settings["ball"]["speed"]
@@ -121,7 +121,7 @@ while True:
             ball_y_direction = 0
         else:
             vertical_speed -= .5
-        # pygame.mixer.music.play()
+        pygame.mixer.music.play()
     if ball_position[0] >= width - 5 - p1_paddle_width - radius / 2 and p2_position - radius / 2 <= ball_position[1] and p2_position + p2_paddle_height + radius / 2 >= ball_position[1]:
         ball_x_direction = 1
         if ball_position[1] >= p2_position - radius / 2 and ball_position[1] <= p2_position - radius / 2 + 15:
@@ -132,7 +132,7 @@ while True:
             ball_y_direction = 0
         else:
             vertical_speed -= .5
-        # pygame.mixer.music.play()
+        pygame.mixer.music.play()
 
     # Board
     screen.fill("black")
