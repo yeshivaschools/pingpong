@@ -3,7 +3,6 @@
     "height": 300,
     "audio": true,
     "volume": 0.5,
-    "buff": true,
     "ball": {
         "speed": 3,
         "radius": 12
@@ -19,18 +18,5 @@
             "height": 50,
             "speed": 4
         }
-    },
-    "buffs": [
-        { "type": "p", "value": "w*2" },
-        { "type": "p", "value": "w/2" },
-        { "type": "p", "value": "h*2" },
-        { "type": "p", "value": "h/2" },
-        { "type": "p", "value": "s*2" },
-        { "type": "p", "value": "s/2" },
-        { "type": "b", "value": "r*2" },
-        { "type": "b", "value": "r/2" },
-        { "type": "b", "value": "s*2" },
-        { "type": "b", "value": "s/2" },
-        { "type": "s", "value": null}
-    ]
+    }
 }
