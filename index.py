@@ -30,6 +30,8 @@ p2_position = (height / 2) - (p2_paddle_height / 2)
 ball_position = [width / 2, height / 2]
 ball_x_direction = 0 # 0 for left, 1 for right
 ball_y_direction = random.randint(0, 1) # 0 for down, 1 for up
+vertical_speed = speed
+paused = True
 
 # Score
 p1_score = 0
@@ -51,39 +53,49 @@ while True:
             pygame.quit()
             sys.exit()
             break
-
-    # User motion
+    
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_UP] and p2_position >= 0:
-        p2_position -= p2_paddle_speed
-    if keys[pygame.K_DOWN] and p2_position <= height - p2_paddle_height:
-        p2_position += p2_paddle_speed
-    if keys[pygame.K_w] and p1_position >= 0:
-        p1_position -= p1_paddle_speed
-    if keys[pygame.K_s] and p1_position <= height - p1_paddle_height:
-        p1_position += p1_paddle_speed
+    
+    if keys[pygame.K_p]:
+        if paused:
+            paused = False
+        else:
+            paused = True
 
-    # Ball motion
-    if ball_position[1] == 0:
-        ball_y_direction = 0
-    if ball_position[1] == height:
-        ball_y_direction = 1
+    if not paused:
+        # User motion
+        if keys[pygame.K_UP] and p2_position >= 0:
+            p2_position -= p2_paddle_speed
+        if keys[pygame.K_DOWN] and p2_position <= height - p2_paddle_height:
+            p2_position += p2_paddle_speed
+        if keys[pygame.K_w] and p1_position >= 0:
+            p1_position -= p1_paddle_speed
+        if keys[pygame.K_s] and p1_position <= height - p1_paddle_height:
+            p1_position += p1_paddle_speed
 
-    if ball_y_direction:
-        ball_position[1] -= speed
-    else:
-        ball_position[1] += speed
+        # Ball motion
+        if ball_position[1] <= 0:
+            ball_y_direction = 0
+        if ball_position[1] >= height:
+            ball_y_direction = 1
 
-    if ball_x_direction:
-        ball_position[0] -= speed
-    else:
-        ball_position[0] += speed
+        if ball_y_direction:
+            ball_position[1] -= vertical_speed
+        else:
+            ball_position[1] += vertical_speed
 
+        if ball_x_direction:
+            ball_position[0] -= speed
+        else:
+            ball_position[0] += speed
+
+    # Handle scoring
     if ball_position[0] <= 0:
         p2_score += 1
 
         ball_y_direction = random.randint(0, 1)
         ball_position = [width / 2, height / 2]
+        vertical_speed = speed
 
         # Handle serve
         if serve:
@@ -91,11 +103,14 @@ while True:
         else:
             serve = 1
         ball_x_direction = serve
+
+        paused = True
     if ball_position[0] >= width:
         p1_score += 1
 
         ball_y_direction = random.randint(0, 1)
         ball_position = [width / 2, height / 2]
+        vertical_speed = speed
 
         # Handle serve
         if serve:
@@ -104,11 +119,29 @@ while True:
             serve = 1
         ball_x_direction = serve
 
+        paused = True
+
     # Handle ball & paddle interaction
     if ball_position[0] <= 5 + p1_paddle_width + radius / 2 and p1_position - radius / 2 <= ball_position[1] and p1_position + p1_paddle_height + radius / 2 >= ball_position[1]:
         ball_x_direction = 0
+        if ball_position[1] >= p1_position - radius / 2 and ball_position[1] <= p1_position - radius / 2 + 15:
+            vertical_speed += .1
+            ball_y_direction = 1
+        elif ball_position[1] <= p1_position + p1_paddle_height + radius / 2 and ball_position[1] >= p1_position + p1_paddle_height + radius / 2 - 15:
+            vertical_speed += 1
+            ball_y_direction = 0
+        else:
+            vertical_speed -= .5
     if ball_position[0] >= width - 5 - p1_paddle_width - radius / 2 and p2_position - radius / 2 <= ball_position[1] and p2_position + p2_paddle_height + radius / 2 >= ball_position[1]:
         ball_x_direction = 1
+        if ball_position[1] >= p2_position - radius / 2 and ball_position[1] <= p2_position - radius / 2 + 15:
+            vertical_speed += .1
+            ball_y_direction = 1
+        elif ball_position[1] <= p2_position + p2_paddle_height + radius / 2 and ball_position[1] >= p2_position + p2_paddle_height + radius / 2 - 15:
+            vertical_speed += 1
+            ball_y_direction = 0
+        else:
+            vertical_speed -= .5
 
     # Board
     screen.fill("black")
@@ -118,8 +151,8 @@ while True:
     pygame.draw.circle(screen, "white", (width / 2, height / 2), 10)
 
     # Players
-    pygame.draw.rect(screen, "white", pygame.Rect(p1_paddle_width, p1_position, 5, 50))
-    pygame.draw.rect(screen, "white", pygame.Rect(width - p2_paddle_width * 2, p2_position, 5, 50))
+    pygame.draw.rect(screen, "white", pygame.Rect(p1_paddle_width, p1_position, 5, 50), 0, 0, 0, 10, 0, 10)
+    pygame.draw.rect(screen, "white", pygame.Rect(width - p2_paddle_width * 2, p2_position, 5, 50), 0, 0, 10, 0, 10, 0)
 
     # Score
     screen.blit(font.render(str(p1_score), False, "white"), (width / 4 - 25, 0))
