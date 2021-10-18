@@ -154,7 +154,7 @@ while True:
     screen.blit(font.render(str(p2_score), False, "white"), ((width / 4) * 3 + 10, 0))
 
     # Ball
-    pygame.draw.circle(screen, "yellow", (ball_position[0], ball_position[1]), radius)
+    pygame.draw.circle(screen, "grey", (ball_position[0], ball_position[1]), radius)
 
     pygame.display.flip()
     clock.tick(60)
