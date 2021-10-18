@@ -58,18 +58,18 @@ while True:
         # else:
         #     paused = True
 
-    if not paused:
-        # User motion
-        if keys[pygame.K_UP] and p2_position >= 0:
-            p2_position -= p2_paddle_speed
-        if keys[pygame.K_DOWN] and p2_position <= height - p2_paddle_height:
-            p2_position += p2_paddle_speed
-        if keys[pygame.K_w] and p1_position >= 0:
-            p1_position -= p1_paddle_speed
-        if keys[pygame.K_s] and p1_position <= height - p1_paddle_height:
-            p1_position += p1_paddle_speed
+    # User motion
+    if keys[pygame.K_UP] and p2_position >= 0:
+        p2_position -= p2_paddle_speed
+    if keys[pygame.K_DOWN] and p2_position <= height - p2_paddle_height:
+        p2_position += p2_paddle_speed
+    if keys[pygame.K_w] and p1_position >= 0:
+        p1_position -= p1_paddle_speed
+    if keys[pygame.K_s] and p1_position <= height - p1_paddle_height:
+        p1_position += p1_paddle_speed
 
-        # Ball horizontal movement
+    # Ball horizontal movement
+    if not paused:
         if ball_y_direction:
             ball_position[1] -= vertical_speed
         else:
