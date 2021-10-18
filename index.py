@@ -52,7 +52,7 @@ while True:
     
     keys = pygame.key.get_pressed()
     
-    if keys[pygame.K_p]:
+    if keys[pygame.K_SPACE]:
         if paused:
             paused = False
         # else:

@@ -9,6 +9,7 @@ ___
 * player 2
     * `up` To move **up**
     * `down` To move **Down**
+* Press `Space` to **serve**
 ___
 #### To change the game settings, you can change the values in the `./settings.json` file.
 [aroary](https://github.com/aroary) | [replit](https://replit.com/@aroary4444/pingpong)
