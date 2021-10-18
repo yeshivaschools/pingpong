@@ -78,10 +78,10 @@ while True:
         else:
             ball_position[0] += speed
 
-    # Ball motion
-    if ball_position[1] <= 0:
+    # Ball vertical motion
+    if ball_position[1] <= radius / 2:
         ball_y_direction = 0
-    if ball_position[1] >= height:
+    if ball_position[1] >= height - radius / 2:
         ball_y_direction = 1
 
     # Handle scoring
