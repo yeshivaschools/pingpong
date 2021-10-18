@@ -1,5 +1,6 @@
 # pingpong
 #### 2D Ping Pong game
+![preview image](https://cdn.discordapp.com/attachments/806009448597946393/899472639352000512/unknown.png)
 ___
 ### How to play:
 * player 1
