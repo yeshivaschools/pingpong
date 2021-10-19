@@ -1,5 +1,5 @@
 import json
-import sys
+import os
 import random
 import pygame
 
@@ -7,9 +7,13 @@ with open("settings.json") as file:
     settings = json.load(file)
 
 pygame.init()
+
 clock = pygame.time.Clock()
+
 game = pygame.display.set_mode((settings["width"], settings["height"]))
+
 pygame.display.set_caption("Pong", "aroary")
+
 width, height = pygame.display.get_surface().get_size()
 font = pygame.font.SysFont("Sans Sheriff", 50)
 
@@ -22,7 +26,7 @@ p1_paddle_height = settings["paddle"]["p1"]["height"]
 p2_paddle_speed = settings["paddle"]["p2"]["speed"]
 p2_paddle_width = settings["paddle"]["p2"]["width"]
 p2_paddle_height = settings["paddle"]["p2"]["height"]
-settings_open = False
+open_settings = False
 
 # Audio
 audio = settings["audio"]
@@ -35,8 +39,8 @@ serve = 0
 p1_position = (height / 2) - (p1_paddle_height / 2)
 p2_position = (height / 2) - (p2_paddle_height / 2)
 ball_position = [width / 2, height / 2]
-ball_x_direction = 0 # 0 for left, 1 for right
-ball_y_direction = random.randint(0, 1) # 0 for down, 1 for up
+ball_x_direction = 0  # 0 for left, 1 for right
+ball_y_direction = random.randint(0, 1)  # 0 for down, 1 for up
 vertical_speed = speed
 paused = True
 
@@ -48,11 +52,14 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            sys.exit()
             break
-    
+
     keys = pygame.key.get_pressed()
-    
+
+    if keys[pygame.K_TAB] and (keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]):
+        open_settings = True
+        break
+
     if keys[pygame.K_SPACE]:
         if paused:
             paused = False
@@ -165,7 +172,7 @@ while True:
 
     # Board
     game.fill("black")
-    pygame.draw.rect(game, "white",pygame.Rect(width / 2 - 5, 0, 10, height))
+    pygame.draw.rect(game, "white", pygame.Rect(width / 2 - 5, 0, 10, height))
     pygame.draw.circle(game, "white", (width / 2, height / 2), height / 4)
     pygame.draw.circle(game, "black", (width / 2, height / 2), height / 4 - 10)
     pygame.draw.circle(game, "white", (width / 2, height / 2), 10)
@@ -183,3 +190,6 @@ while True:
 
     pygame.display.flip()
     clock.tick(60)
+
+if open_settings:
+    os.startfile("settings.json")
