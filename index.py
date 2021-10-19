@@ -8,7 +8,7 @@ with open("settings.json") as file:
 
 pygame.init()
 clock = pygame.time.Clock()
-screen = pygame.display.set_mode((settings["width"], settings["height"]))
+game = pygame.display.set_mode((settings["width"], settings["height"]))
 pygame.display.set_caption("Pong", "aroary")
 width, height = pygame.display.get_surface().get_size()
 font = pygame.font.SysFont("Sans Sheriff", 50)
@@ -22,6 +22,7 @@ p1_paddle_height = settings["paddle"]["p1"]["height"]
 p2_paddle_speed = settings["paddle"]["p2"]["speed"]
 p2_paddle_width = settings["paddle"]["p2"]["width"]
 p2_paddle_height = settings["paddle"]["p2"]["height"]
+settings_open = False
 
 # Audio
 audio = settings["audio"]
@@ -59,22 +60,38 @@ while True:
         #     paused = True
 
     # User motion
-    if settings["robot"]:
-        if ball_position[0] >= width / 2:
+    if settings["robotPlayer"] == 1:
+        if ball_position[0] <= width / settings["robotView"]:
+            if p1_position + p1_paddle_height / 2 > ball_position[1] and p1_position > 0:
+                p1_position -= p1_paddle_speed
+            if p1_position + p1_paddle_height / 2 < ball_position[1] and p1_position + p1_paddle_height < height:
+                p1_position += p1_paddle_speed
+
+        if keys[pygame.K_UP] and p2_position >= 0:
+            p2_position -= p2_paddle_speed
+        if keys[pygame.K_DOWN] and p2_position <= height - p2_paddle_height:
+            p2_position += p2_paddle_speed
+    elif settings["robotPlayer"] == 2:
+        if ball_position[0] >= width / settings["robotView"]:
             if p2_position + p2_paddle_height / 2 > ball_position[1] and p2_position > 0:
                 p2_position -= p2_paddle_speed
             if p2_position + p2_paddle_height / 2 < ball_position[1] and p2_position + p2_paddle_height < height:
                 p2_position += p2_paddle_speed
+        
+        if keys[pygame.K_w] and p1_position >= 0:
+            p1_position -= p1_paddle_speed
+        if keys[pygame.K_s] and p1_position <= height - p1_paddle_height:
+            p1_position += p1_paddle_speed
     else:
         if keys[pygame.K_UP] and p2_position >= 0:
             p2_position -= p2_paddle_speed
         if keys[pygame.K_DOWN] and p2_position <= height - p2_paddle_height:
             p2_position += p2_paddle_speed
 
-    if keys[pygame.K_w] and p1_position >= 0:
-        p1_position -= p1_paddle_speed
-    if keys[pygame.K_s] and p1_position <= height - p1_paddle_height:
-        p1_position += p1_paddle_speed
+        if keys[pygame.K_w] and p1_position >= 0:
+            p1_position -= p1_paddle_speed
+        if keys[pygame.K_s] and p1_position <= height - p1_paddle_height:
+            p1_position += p1_paddle_speed
 
     # Ball horizontal movement
     if not paused:
@@ -147,22 +164,22 @@ while True:
             pygame.mixer.music.play()
 
     # Board
-    screen.fill("black")
-    pygame.draw.rect(screen, "white",pygame.Rect(width / 2 - 5, 0, 10, height))
-    pygame.draw.circle(screen, "white", (width / 2, height / 2), height / 4)
-    pygame.draw.circle(screen, "black", (width / 2, height / 2), height / 4 - 10)
-    pygame.draw.circle(screen, "white", (width / 2, height / 2), 10)
+    game.fill("black")
+    pygame.draw.rect(game, "white",pygame.Rect(width / 2 - 5, 0, 10, height))
+    pygame.draw.circle(game, "white", (width / 2, height / 2), height / 4)
+    pygame.draw.circle(game, "black", (width / 2, height / 2), height / 4 - 10)
+    pygame.draw.circle(game, "white", (width / 2, height / 2), 10)
 
     # Players
-    pygame.draw.rect(screen, "white", pygame.Rect(5, p1_position, p1_paddle_width, p1_paddle_height), 0, 0, 0, 10, 0, 10)
-    pygame.draw.rect(screen, "white", pygame.Rect(width - p2_paddle_width - 5, p2_position, p2_paddle_width, p2_paddle_height), 0, 0, 10, 0, 10, 0)
+    pygame.draw.rect(game, "white", pygame.Rect(5, p1_position, p1_paddle_width, p1_paddle_height), 0, 0, 0, 10, 0, 10)
+    pygame.draw.rect(game, "white", pygame.Rect(width - p2_paddle_width - 5, p2_position, p2_paddle_width, p2_paddle_height), 0, 0, 10, 0, 10, 0)
 
     # Score
-    screen.blit(font.render(str(p1_score), False, "white"), (width / 4 - 25, 0))
-    screen.blit(font.render(str(p2_score), False, "white"), ((width / 4) * 3 + 10, 0))
+    game.blit(font.render(str(p1_score), False, "white"), (width / 4 - 25, 0))
+    game.blit(font.render(str(p2_score), False, "white"), ((width / 4) * 3 + 10, 0))
 
     # Ball
-    pygame.draw.circle(screen, "grey", (ball_position[0], ball_position[1]), radius)
+    pygame.draw.circle(game, "grey", (ball_position[0], ball_position[1]), radius)
 
     pygame.display.flip()
     clock.tick(60)
