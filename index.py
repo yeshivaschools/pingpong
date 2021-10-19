@@ -27,6 +27,7 @@ p2_paddle_speed = settings["paddle"]["p2"]["speed"]
 p2_paddle_width = settings["paddle"]["p2"]["width"]
 p2_paddle_height = settings["paddle"]["p2"]["height"]
 open_settings = False
+close_game = False
 
 # Audio
 audio = settings["audio"]
@@ -51,8 +52,10 @@ p2_score = 0
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
-            break
+            close_game = True
+
+    if close_game:
+        break
 
     keys = pygame.key.get_pressed()
 
@@ -154,7 +157,7 @@ while True:
             vertical_speed += 1
             ball_y_direction = 0
         else:
-            vertical_speed -= .5
+            vertical_speed -= .25
         if audio:
             pygame.mixer.music.play()
     if ball_position[0] >= width - 5 - p2_paddle_width - radius / 2 and p2_position - radius / 2 <= ball_position[1] and p2_position + p2_paddle_height + radius / 2 >= ball_position[1]:
@@ -166,7 +169,7 @@ while True:
             vertical_speed += 1
             ball_y_direction = 0
         else:
-            vertical_speed -= .5
+            vertical_speed -= .25
         if audio:
             pygame.mixer.music.play()
 
@@ -190,6 +193,8 @@ while True:
 
     pygame.display.flip()
     clock.tick(60)
+
+pygame.quit()
 
 if open_settings:
     os.startfile("settings.json")
