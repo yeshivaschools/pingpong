@@ -1,16 +1,17 @@
 import json
 import os
+import types
 import random
 import pygame
 
 with open("settings.json") as file:
-    settings = json.load(file)
+    settings = json.load(file, object_hook=lambda d: types.SimpleNamespace(**d))
 
 pygame.init()
 
 clock = pygame.time.Clock()
 
-game = pygame.display.set_mode((settings["width"], settings["height"]))
+game = pygame.display.set_mode((settings.width, settings.height))
 
 pygame.display.set_caption("Pong", "aroary")
 
@@ -18,22 +19,22 @@ width, height = pygame.display.get_surface().get_size()
 font = pygame.font.SysFont("Sans Sheriff", 50)
 
 # Settings
-speed = settings["ball"]["speed"]
-radius = settings["ball"]["radius"]
-p1_paddle_speed = settings["paddle"]["p1"]["speed"]
-p1_paddle_width = settings["paddle"]["p1"]["width"]
-p1_paddle_height = settings["paddle"]["p1"]["height"]
-p2_paddle_speed = settings["paddle"]["p2"]["speed"]
-p2_paddle_width = settings["paddle"]["p2"]["width"]
-p2_paddle_height = settings["paddle"]["p2"]["height"]
+speed = settings.ball.speed
+radius = settings.ball.radius
+p1_paddle_speed = settings.paddle.p1.speed
+p1_paddle_width = settings.paddle.p1.width
+p1_paddle_height = settings.paddle.p1.height
+p2_paddle_speed = settings.paddle.p2.speed
+p2_paddle_width = settings.paddle.p2.width
+p2_paddle_height = settings.paddle.p2.height
 open_settings = False
 close_game = False
 
 # Audio
-audio = settings["audio"]
+audio = settings.audio
 if audio:
     pygame.mixer.music.load("effects.mp3")
-    pygame.mixer.music.set_volume(settings["volume"])
+    pygame.mixer.music.set_volume(settings.volume)
 
 # Positions
 serve = 0
@@ -70,8 +71,8 @@ while True:
         #     paused = True
 
     # User motion
-    if settings["robotPlayer"] == 1:
-        if ball_position[0] <= width / settings["robotView"]:
+    if settings.robotPlayer == 1:
+        if ball_position[0] <= width / settings.robotView:
             if p1_position + p1_paddle_height / 2 > ball_position[1] and p1_position > 0:
                 p1_position -= p1_paddle_speed
             if p1_position + p1_paddle_height / 2 < ball_position[1] and p1_position + p1_paddle_height < height:
@@ -81,8 +82,8 @@ while True:
             p2_position -= p2_paddle_speed
         if keys[pygame.K_DOWN] and p2_position <= height - p2_paddle_height:
             p2_position += p2_paddle_speed
-    elif settings["robotPlayer"] == 2:
-        if ball_position[0] >= width / settings["robotView"]:
+    elif settings.robotPlayer == 2:
+        if ball_position[0] >= width / settings.robotView:
             if p2_position + p2_paddle_height / 2 > ball_position[1] and p2_position > 0:
                 p2_position -= p2_paddle_speed
             if p2_position + p2_paddle_height / 2 < ball_position[1] and p2_position + p2_paddle_height < height:
