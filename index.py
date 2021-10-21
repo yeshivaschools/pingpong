@@ -195,8 +195,18 @@ while True:
     pygame.display.flip()
     clock.tick(60)
 
-pygame.quit()
-
 # replace with a settings editor window
-# if open_settings:
-#     os.startfile("settings.json")
+if open_settings:
+    data = json.dumps(settings, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+    while True:
+        game.fill("black")
+
+        format_data = data.split("\n")
+        line = 0
+        for i in format_data:
+            game.blit(font.render(i, False, "white"), (0, line))
+            line += 50
+
+        pygame.display.flip()
+        clock.tick(10)
+pygame.quit()
