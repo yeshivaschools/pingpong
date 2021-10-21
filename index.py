@@ -15,7 +15,8 @@ game = pygame.display.set_mode((settings.width, settings.height))
 pygame.display.set_caption("Pong", "aroary")
 
 width, height = pygame.display.get_surface().get_size()
-font = pygame.font.SysFont("Sans Sheriff", 50)
+font = pygame.font.SysFont(None, 50)
+editor_font = pygame.font.SysFont(None, 20)
 
 # Settings
 speed = settings.ball.speed
@@ -49,13 +50,10 @@ paused = True
 p1_score = 0
 p2_score = 0
 
-while True:
+while not close_game:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             close_game = True
-
-    if close_game:
-        break
 
     keys = pygame.key.get_pressed()
 
@@ -194,19 +192,40 @@ while True:
     pygame.display.flip()
     clock.tick(60)
 
-# replace with a settings editor window
 if open_settings:
-    data = json.dumps(settings, default=lambda o: o.__dict__, sort_keys=True, indent=4)
-    while True:
+    input_box = pygame.Rect(10, height / 2, width - 20, 40)
+    color_inactive = pygame.Color('lightskyblue3')
+    color_active = pygame.Color('dodgerblue2')
+    color = color_inactive
+    active = False
+    text = json.dumps(settings, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+    close_settigs = False
+
+    while not close_settigs:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                close_settigs = True
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if input_box.collidepoint(event.pos):
+                    active = not active
+                else:
+                    active = False
+                color = color_active if active else color_inactive
+            if event.type == pygame.KEYDOWN:
+                if active:
+                    if event.key == pygame.K_RETURN:
+                        text = ''
+                    elif event.key == pygame.K_BACKSPACE:
+                        text = text[:-1]
+                    else:
+                        text += event.unicode
+
         game.fill("black")
 
-        format_data = data.split("\n")
-        line = 0
-        for i in format_data:
-            game.blit(font.render(i, False, "white"), (0, line))
-            line += 50
+        game.blit(font.render(text, True, "white"), (input_box.x + 5, input_box.y + 5))
+        pygame.draw.rect(game, color, input_box, 2, 4)
         
         pygame.display.flip()
-        clock.tick(10)
+        clock.tick(30)
 
 pygame.quit()
