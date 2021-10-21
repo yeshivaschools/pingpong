@@ -197,5 +197,6 @@ while True:
 
 pygame.quit()
 
-if open_settings:
-    os.startfile("settings.json")
+# replace with a settings editor window
+# if open_settings:
+#     os.startfile("settings.json")
