@@ -1,5 +1,4 @@
 import json
-import os
 import types
 import random
 import pygame
@@ -206,7 +205,8 @@ if open_settings:
         for i in format_data:
             game.blit(font.render(i, False, "white"), (0, line))
             line += 50
-
+        
         pygame.display.flip()
         clock.tick(10)
+
 pygame.quit()
