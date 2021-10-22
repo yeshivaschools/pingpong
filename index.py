@@ -3,7 +3,6 @@ import types
 import random
 import math
 import pygame
-from pygame.constants import K_COMMA
 
 with open("settings.json") as file:
     settings = json.load(file, object_hook=lambda d: types.SimpleNamespace(**d))
