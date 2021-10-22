@@ -3,6 +3,7 @@ import types
 import random
 import math
 import pygame
+from pygame.constants import K_COMMA
 
 with open("settings.json") as file:
     settings = json.load(file, object_hook=lambda d: types.SimpleNamespace(**d))
@@ -197,8 +198,36 @@ if open_settings:
         if data_setting == "window" and len(chars) == 2 and chars[0].isnumeric() and chars[1].isnumeric():
             arg1 = int(chars[0])
             arg2 = int(chars[1])
-            if arg1 >= 300 and arg1 <= 1200 and arg2 >= 500 and arg2 <= 20000:
+            if arg1 >= 500 and arg1 <= 20000 and arg2 >= 300 and arg2 <= 1200:
                 return "green"
+
+        elif data_setting == "bot" and len(chars) == 2 and chars[0].isnumeric() and chars[1].isnumeric():
+            arg1 = int(chars[0])
+            arg2 = int(chars[1])
+            if arg1 >= 0 and arg1 <= 2 and arg2 >= 1 and arg2 <= 3:
+                return "green"
+        
+        elif data_setting == "ball" and len(chars) == 2 and chars[0].isnumeric() and chars[1].isnumeric():
+            arg1 = int(chars[0])
+            arg2 = int(chars[1])
+            if arg1 >= 1 and arg1 <= 12 and arg2 >= 2 and arg2 <= 400:
+                return "green"
+        
+        elif data_setting == "window" and len(chars) == 2 and chars[0].isnumeric() and chars[1].isnumeric():
+            arg1 = int(chars[0])
+            arg2 = int(chars[1])
+            if arg1 >= 500 and arg1 <= 20000 and arg2 >= 300 and arg2 <= 1200:
+                return "green"
+        
+        elif data_setting == "window" and len(chars) == 2 and chars[0].isnumeric() and chars[1].isnumeric():
+            arg1 = int(chars[0])
+            arg2 = int(chars[1])
+            if arg1 >= 500 and arg1 <= 20000 and arg2 >= 300 and arg2 <= 1200:
+                return "green"
+
+        else:
+            return "yellow"
+
         return "red"
 
     # window settings
@@ -246,7 +275,21 @@ if open_settings:
     p2_active = False
     p2_text = f"{p2_paddle_width},{p2_paddle_height},{p2_paddle_speed}"
 
-    allowed_chars = "0123456789,".split()
+    allowed_chars = [
+        pygame.K_0,
+        pygame.K_1,
+        pygame.K_2,
+        pygame.K_3,
+        pygame.K_4,
+        pygame.K_5,
+        pygame.K_6,
+        pygame.K_7,
+        pygame.K_8,
+        pygame.K_9,
+        pygame.K_COMMA,
+        pygame.K_BACKSPACE
+    ]
+
     close_settigs = False
 
     while not close_settigs:
@@ -284,11 +327,9 @@ if open_settings:
                 ball_color = ball_color_active if ball_active else ball_color_inactive
                 p1_color = p1_color_active if p1_active else p1_color_inactive
                 p2_color = p2_color_active if p2_active else p2_color_inactive
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN and event.key in allowed_chars:
                 if window_active:
-                    if event.key == pygame.K_RETURN:
-                        window_text = window_text
-                    elif event.key == pygame.K_BACKSPACE:
+                    if event.key == pygame.K_BACKSPACE:
                         window_text = window_text[:-1]
                         window_text_color = char_check("window", window_text)
                     else:
@@ -296,36 +337,36 @@ if open_settings:
                         window_text_color = char_check("window", window_text)
 
                 if bot_active:
-                    if event.key == pygame.K_RETURN:
-                        bot_text = ''
-                    elif event.key == pygame.K_BACKSPACE:
+                    if event.key == pygame.K_BACKSPACE:
                         bot_text = bot_text[:-1]
+                        bot_text_color = char_check("bot", bot_text)
                     else:
                         bot_text += event.unicode
+                        bot_text_color = char_check("bot", bot_text)
 
                 if ball_active:
-                    if event.key == pygame.K_RETURN:
-                        ball_text = ''
-                    elif event.key == pygame.K_BACKSPACE:
+                    if event.key == pygame.K_BACKSPACE:
                         ball_text = ball_text[:-1]
+                        ball_text_color = char_check("ball", ball_text)
                     else:
                         ball_text += event.unicode
+                        ball_text_color = char_check("ball", ball_text)
 
                 if p1_active:
-                    if event.key == pygame.K_RETURN:
-                        p1_text = ''
-                    elif event.key == pygame.K_BACKSPACE:
+                    if event.key == pygame.K_BACKSPACE:
                         p1_text = p1_text[:-1]
+                        p1_text_color = char_check("p1", p1_text)
                     else:
                         p1_text += event.unicode
+                        p1_text_color = char_check("p1", p1_text)
 
                 if p2_active:
-                    if event.key == pygame.K_RETURN:
-                        p2_text = ''
-                    elif event.key == pygame.K_BACKSPACE:
+                    if event.key == pygame.K_BACKSPACE:
                         p2_text = p2_text[:-1]
+                        p2_text_color = char_check("p2", p2_text)
                     else:
                         p2_text += event.unicode
+                        p2_text_color = char_check("p2", p2_text)
 
         game.fill("black")
 
