@@ -1,6 +1,7 @@
 import json
 import types
 import random
+import math
 import pygame
 
 with open("settings.json") as file:
@@ -16,7 +17,7 @@ pygame.display.set_caption("Pong", "aroary")
 
 width, height = pygame.display.get_surface().get_size()
 font = pygame.font.SysFont(None, 50)
-editor_font = pygame.font.SysFont(None, 20)
+editor_font = pygame.font.SysFont(None, math.floor(height / 15))
 
 # Settings
 speed = settings.ball.speed
@@ -64,8 +65,6 @@ while not close_game:
     if keys[pygame.K_SPACE]:
         if paused:
             paused = False
-        # else:
-        #     paused = True
 
     # User motion
     if settings.robotPlayer == 1:
@@ -193,12 +192,61 @@ while not close_game:
     clock.tick(60)
 
 if open_settings:
-    input_box = pygame.Rect(10, height / 2, width - 20, 40)
-    color_inactive = pygame.Color('lightskyblue3')
-    color_active = pygame.Color('dodgerblue2')
-    color = color_inactive
-    active = False
-    text = json.dumps(settings, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+    def char_check(data_setting, chars):
+        chars = chars.split(",")
+        if data_setting == "window" and len(chars) == 2 and chars[0].isnumeric() and chars[1].isnumeric():
+            arg1 = int(chars[0])
+            arg2 = int(chars[1])
+            if arg1 >= 300 and arg1 <= 1200 and arg2 >= 500 and arg2 <= 20000:
+                return "green"
+        return "red"
+
+    # window settings
+    window_input_box = pygame.Rect(width / 3, 5, (width / 3) * 2 - 20, 40)
+    window_color_inactive = pygame.Color('lightskyblue3')
+    window_color_active = pygame.Color('dodgerblue2')
+    window_color = window_color_inactive
+    window_text_color = "green"
+    window_active = False
+    window_text = f"{width},{height}"
+
+    # bot settings
+    bot_input_box = pygame.Rect(width / 3, height / 5 + 5, (width / 3) * 2 - 20, 40)
+    bot_color_inactive = pygame.Color('lightskyblue3')
+    bot_color_active = pygame.Color('dodgerblue2')
+    bot_color = bot_color_inactive
+    bot_text_color = "green"
+    bot_active = False
+    bot_text = f"{settings.robotPlayer},{settings.robotView}"
+
+    # ball settings
+    ball_input_box = pygame.Rect(width / 3, (height / 5) * 2 + 5, (width / 3) * 2 - 20, 40)
+    ball_color_inactive = pygame.Color('lightskyblue3')
+    ball_color_active = pygame.Color('dodgerblue2')
+    ball_color = ball_color_inactive
+    ball_text_color = "green"
+    ball_active = False
+    ball_text = f"{speed},{radius}"
+
+    # left paddle settings
+    p1_input_box = pygame.Rect(width / 3, (height / 5) * 3 + 5, (width / 3) * 2 - 20, 40)
+    p1_color_inactive = pygame.Color('lightskyblue3')
+    p1_color_active = pygame.Color('dodgerblue2')
+    p1_color = p1_color_inactive
+    p1_text_color = "green"
+    p1_active = False
+    p1_text = f"{p1_paddle_width},{p1_paddle_height},{p1_paddle_speed}"
+
+    # right paddle settings
+    p2_input_box = pygame.Rect(width / 3, (height / 5) * 4 + 5, (width / 3) * 2 - 20, 40)
+    p2_color_inactive = pygame.Color('lightskyblue3')
+    p2_color_active = pygame.Color('dodgerblue2')
+    p2_color = p2_color_inactive
+    p2_text_color = "green"
+    p2_active = False
+    p2_text = f"{p2_paddle_width},{p2_paddle_height},{p2_paddle_speed}"
+
+    allowed_chars = "0123456789,".split()
     close_settigs = False
 
     while not close_settigs:
@@ -206,24 +254,95 @@ if open_settings:
             if event.type == pygame.QUIT:
                 close_settigs = True
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if input_box.collidepoint(event.pos):
-                    active = not active
+                if window_input_box.collidepoint(event.pos):
+                    window_active = not window_active
                 else:
-                    active = False
-                color = color_active if active else color_inactive
+                    window_active = False
+                
+                if bot_input_box.collidepoint(event.pos):
+                    bot_active = not bot_active
+                else:
+                    bot_active = False
+                
+                if ball_input_box.collidepoint(event.pos):
+                    ball_active = not ball_active
+                else:
+                    ball_active = False
+                
+                if p1_input_box.collidepoint(event.pos):
+                    p1_active = not p1_active
+                else:
+                    p1_active = False
+                
+                if p2_input_box.collidepoint(event.pos):
+                    p2_active = not p2_active
+                else:
+                    p2_active = False
+                
+                window_color = window_color_active if window_active else window_color_inactive
+                bot_color = bot_color_active if bot_active else bot_color_inactive
+                ball_color = ball_color_active if ball_active else ball_color_inactive
+                p1_color = p1_color_active if p1_active else p1_color_inactive
+                p2_color = p2_color_active if p2_active else p2_color_inactive
             if event.type == pygame.KEYDOWN:
-                if active:
+                if window_active:
                     if event.key == pygame.K_RETURN:
-                        text = ''
+                        window_text = window_text
                     elif event.key == pygame.K_BACKSPACE:
-                        text = text[:-1]
+                        window_text = window_text[:-1]
+                        window_text_color = char_check("window", window_text)
                     else:
-                        text += event.unicode
+                        window_text += event.unicode
+                        window_text_color = char_check("window", window_text)
+
+                if bot_active:
+                    if event.key == pygame.K_RETURN:
+                        bot_text = ''
+                    elif event.key == pygame.K_BACKSPACE:
+                        bot_text = bot_text[:-1]
+                    else:
+                        bot_text += event.unicode
+
+                if ball_active:
+                    if event.key == pygame.K_RETURN:
+                        ball_text = ''
+                    elif event.key == pygame.K_BACKSPACE:
+                        ball_text = ball_text[:-1]
+                    else:
+                        ball_text += event.unicode
+
+                if p1_active:
+                    if event.key == pygame.K_RETURN:
+                        p1_text = ''
+                    elif event.key == pygame.K_BACKSPACE:
+                        p1_text = p1_text[:-1]
+                    else:
+                        p1_text += event.unicode
+
+                if p2_active:
+                    if event.key == pygame.K_RETURN:
+                        p2_text = ''
+                    elif event.key == pygame.K_BACKSPACE:
+                        p2_text = p2_text[:-1]
+                    else:
+                        p2_text += event.unicode
 
         game.fill("black")
 
-        game.blit(font.render(text, True, "white"), (input_box.x + 5, input_box.y + 5))
-        pygame.draw.rect(game, color, input_box, 2, 4)
+        game.blit(font.render(window_text, True, window_text_color), (window_input_box.x + 5, window_input_box.y + 5))
+        pygame.draw.rect(game, window_color, window_input_box, 2, 4)
+        
+        game.blit(font.render(bot_text, True, bot_text_color), (bot_input_box.x + 5, bot_input_box.y + 5))
+        pygame.draw.rect(game, bot_color, bot_input_box, 2, 4)
+
+        game.blit(font.render(ball_text, True, ball_text_color), (ball_input_box.x + 5, ball_input_box.y + 5))
+        pygame.draw.rect(game, ball_color, ball_input_box, 2, 4)
+
+        game.blit(font.render(p1_text, True, p1_text_color), (p1_input_box.x + 5, p1_input_box.y + 5))
+        pygame.draw.rect(game, p1_color, p1_input_box, 2, 4)
+
+        game.blit(font.render(p2_text, True, p2_text_color), (p2_input_box.x + 5, p2_input_box.y + 5))
+        pygame.draw.rect(game, p2_color, p2_input_box, 2, 4)
         
         pygame.display.flip()
         clock.tick(30)
