@@ -213,16 +213,18 @@ if open_settings:
             if arg1 >= 1 and arg1 <= 12 and arg2 >= 2 and arg2 <= 400:
                 return "green"
         
-        elif data_setting == "window" and len(chars) == 2 and chars[0].isnumeric() and chars[1].isnumeric():
+        elif data_setting == "p1" and len(chars) == 3 and chars[0].isnumeric() and chars[1].isnumeric() and chars[2].isnumeric():
             arg1 = int(chars[0])
             arg2 = int(chars[1])
-            if arg1 >= 500 and arg1 <= 20000 and arg2 >= 300 and arg2 <= 1200:
+            arg3 = int(chars[2])
+            if arg1 >= 1 and arg1 <= 250 and arg2 >= 1 and arg2 <= 500 and arg3 >= 1 and arg3 <= 50:
                 return "green"
         
-        elif data_setting == "window" and len(chars) == 2 and chars[0].isnumeric() and chars[1].isnumeric():
+        elif data_setting == "p2" and len(chars) == 3 and chars[0].isnumeric() and chars[1].isnumeric() and chars[2].isnumeric():
             arg1 = int(chars[0])
             arg2 = int(chars[1])
-            if arg1 >= 500 and arg1 <= 20000 and arg2 >= 300 and arg2 <= 1200:
+            arg3 = int(chars[2])
+            if arg1 >= 1 and arg1 <= 250 and arg2 >= 1 and arg2 <= 500 and arg3 >= 1 and arg3 <= 50:
                 return "green"
 
         else:
