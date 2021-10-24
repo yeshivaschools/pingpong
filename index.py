@@ -4,10 +4,10 @@ from json import load, dump
 from types import SimpleNamespace
 import pygame
 
+pygame.init()
+
 with open("settings.json") as file:
     settings = load(file, object_hook=lambda d: SimpleNamespace(**d))
-
-pygame.init()
 
 clock = pygame.time.Clock()
 
