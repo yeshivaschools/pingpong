@@ -306,15 +306,15 @@ if open_settings:
             if event.type == pygame.QUIT:
                 with open("settings.json", "w") as file:
                     if window_text_color == "green":
-                        settings.width, settings.height = window_text.split(",")
+                        settings.width, settings.height = list(map(int, window_text.split(",")))
                     if bot_text_color == "green":
-                        settings.robotPlayer, settings.robotView = bot_text.split(",")
+                        settings.robotPlayer, settings.robotView = list(map(int, bot_text.split(",")))
                     if ball_text_color == "green":
-                        settings.ball.speed, settings.ball.radius = ball_text.split(",")
+                        settings.ball.speed, settings.ball.radius = list(map(int, ball_text.split(",")))
                     if p1_text_color == "green":
-                        settings.paddle.p1.width, settings.paddle.p1.height, settings.paddle.p1.speed = p1_text.split(",")
+                        settings.paddle.p1.width, settings.paddle.p1.height, settings.paddle.p1.speed = list(map(int, p1_text.split(",")))
                     if p2_text_color == "green":
-                        settings.paddle.p2.width, settings.paddle.p2.height, settings.paddle.p2.speed= p2_text.split(",")
+                        settings.paddle.p2.width, settings.paddle.p2.height, settings.paddle.p2.speed = list(map(int, p2_text.split(",")))
 
                     dump(settings, file, default=lambda o: o.__dict__, indent=4, ensure_ascii=False)
                 close_settigs = True
