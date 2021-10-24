@@ -1,13 +1,13 @@
-import json
-import types
-import random
-import math
+from random import randint
+from math import floor
+from json import load, dump
+from types import SimpleNamespace
 import pygame
 
-with open("settings.json") as file:
-    settings = json.load(file, object_hook=lambda d: types.SimpleNamespace(**d))
-
 pygame.init()
+
+with open("settings.json") as file:
+    settings = load(file, object_hook=lambda d: SimpleNamespace(**d))
 
 clock = pygame.time.Clock()
 
@@ -17,7 +17,7 @@ pygame.display.set_caption("Pong", "aroary")
 
 width, height = pygame.display.get_surface().get_size()
 font = pygame.font.SysFont(None, 50)
-editor_font = pygame.font.SysFont(None, math.floor(height / 15))
+editor_font = pygame.font.SysFont(None, floor(height / 15))
 
 # Settings
 speed = settings.ball.speed
@@ -43,7 +43,7 @@ p1_position = (height / 2) - (p1_paddle_height / 2)
 p2_position = (height / 2) - (p2_paddle_height / 2)
 ball_position = [width / 2, height / 2]
 ball_x_direction = 0  # 0 for left, 1 for right
-ball_y_direction = random.randint(0, 1)  # 0 for down, 1 for up
+ball_y_direction = randint(0, 1)  # 0 for down, 1 for up
 vertical_speed = speed
 paused = True
 
@@ -121,7 +121,7 @@ while not close_game:
     # Handle scoring
     if ball_position[0] <= 0:
         p2_score += 1
-        ball_y_direction = random.randint(0, 1)
+        ball_y_direction = randint(0, 1)
         ball_position = [width / 2, height / 2]
         vertical_speed = speed
         # Handle serve
@@ -133,7 +133,7 @@ while not close_game:
         paused = True
     if ball_position[0] >= width:
         p1_score += 1
-        ball_y_direction = random.randint(0, 1)
+        ball_y_direction = randint(0, 1)
         ball_position = [width / 2, height / 2]
         vertical_speed = speed
         # Handle serve
@@ -192,6 +192,14 @@ while not close_game:
     clock.tick(60)
 
 if open_settings:
+    setting_types = [
+        [ "window", "w", "h" ],
+        [ "robot", "p", "v" ],
+        [ "ball", "s", "r" ],
+        [ "player 1", "w", "h", "s" ],
+        [ "player 2", "w", "h", "s" ]
+    ]
+
     def char_check(data_setting, chars):
         chars = chars.split(",")
         if data_setting == "window" and len(chars) == 2 and chars[0].isnumeric() and chars[1].isnumeric():
@@ -296,6 +304,19 @@ if open_settings:
     while not close_settigs:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                with open("settings.json", "w") as file:
+                    if window_text_color == "green":
+                        settings.width, settings.height = list(map(int, window_text.split(",")))
+                    if bot_text_color == "green":
+                        settings.robotPlayer, settings.robotView = list(map(int, bot_text.split(",")))
+                    if ball_text_color == "green":
+                        settings.ball.speed, settings.ball.radius = list(map(int, ball_text.split(",")))
+                    if p1_text_color == "green":
+                        settings.paddle.p1.width, settings.paddle.p1.height, settings.paddle.p1.speed = list(map(int, p1_text.split(",")))
+                    if p2_text_color == "green":
+                        settings.paddle.p2.width, settings.paddle.p2.height, settings.paddle.p2.speed = list(map(int, p2_text.split(",")))
+
+                    dump(settings, file, default=lambda o: o.__dict__, indent=4, ensure_ascii=False)
                 close_settigs = True
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if window_input_box.collidepoint(event.pos):
@@ -386,6 +407,12 @@ if open_settings:
         game.blit(font.render(p2_text, True, p2_text_color), (p2_input_box.x + 5, p2_input_box.y + 5))
         pygame.draw.rect(game, p2_color, p2_input_box, 2, 4)
         
+        line = 0
+        for i in setting_types:
+            game.blit(font.render(i[0], True, "white"), (10, height / 5 * line))
+            game.blit(font.render(",".join(i[1:]), True, "white"), (10, height / 5 * line + 20))
+            line += 1
+
         pygame.display.flip()
         clock.tick(30)
 
