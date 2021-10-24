@@ -19,6 +19,28 @@ width, height = pygame.display.get_surface().get_size()
 font = pygame.font.SysFont(None, 50)
 editor_font = pygame.font.SysFont(None, floor(height / 15))
 
+# home
+leave_home = False
+while not leave_home:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            leave_home = True
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                leave_home = True
+
+    game.fill("black")
+
+    game_name = font.render("Pong", True, "white")
+    game.blit(game_name, (width / 5 - game_name.get_width() / 2, height / 5))
+
+    start_text = font.render("Play", True, "black")
+    pygame.draw.rect(game, "white", (width / 2 - start_text.get_width() / 2, height / 2, start_text.get_width() + 10, start_text.get_height() + 10), 0, 4)
+    game.blit(start_text, (width / 2 - start_text.get_width() / 2 + 5, height / 2 + 5))
+
+    pygame.display.flip()
+    clock.tick(10)
+
 # Settings
 speed = settings.ball.speed
 radius = settings.ball.radius
