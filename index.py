@@ -17,7 +17,7 @@ pygame.display.set_caption("Pong", "aroary")
 
 width, height = pygame.display.get_surface().get_size()
 font = pygame.font.SysFont(None, 50)
-editor_font = pygame.font.SysFont(None, floor(height / 15))
+editor_font = pygame.font.SysFont("times", floor(height / 15))
 
 close_game = False
 open_settings = False
@@ -218,7 +218,7 @@ if open_settings:
             arg2 = int(chars[1])
             if arg1 >= 500 and arg1 <= 20000 and arg2 >= 300 and arg2 <= 1200:
                 return "green"
-        elif data_setting == "bot" and len(chars) == 2 and chars[0].isnumeric() and chars[1].isnumeric():
+        elif data_setting == "robot" and len(chars) == 2 and chars[0].isnumeric() and chars[1].isnumeric():
             arg1 = int(chars[0])
             arg2 = int(chars[1])
             if arg1 >= 0 and arg1 <= 2 and arg2 >= 1 and arg2 <= 3:
