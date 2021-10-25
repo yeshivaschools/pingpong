@@ -10,7 +10,7 @@ ___
     * `up` To move **up**
     * `down` To move **Down**
 * Press `Space` to **serve**
-* Press `Shift` and `Tab` to open the settings file
+* Settings documentation
     * Input **1**: window `width, height`
         * `width`: The width of the window (500 ≤ `width` ≤ 20000)
         * `height`: The height of the window (300 ≤ `height` ≤ 12000)
