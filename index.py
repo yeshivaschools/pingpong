@@ -32,6 +32,7 @@ while not leave_home:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             leave_home = True
+            close_game = True
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 leave_home = True
@@ -48,10 +49,10 @@ while not leave_home:
     game_name = font.render("Pong", True, "white")
     game.blit(game_name, (width / 5 - game_name.get_width() / 2, height / 5))
 
-    pygame.draw.rect(game, "white", start_button, 0, 4)
+    pygame.draw.rect(game, "grey" if start_button.collidepoint(pygame.mouse.get_pos()) else "white", start_button, 0, 4)
     game.blit(start_text, (width / 2 - start_text.get_width() / 2 + 5, height / 2 + 5))
 
-    pygame.draw.rect(game, "white", settings_button, 0, 4)
+    pygame.draw.rect(game, "grey" if settings_button.collidepoint(pygame.mouse.get_pos()) else "white", settings_button, 0, 4)
     game.blit(settings_text, (width / 2 - settings_text.get_width() / 2 + 5, height / 2 + settings_text.get_height() + 20))
 
     pygame.display.flip()
@@ -93,10 +94,6 @@ while not close_game:
             close_game = True
 
     keys = pygame.key.get_pressed()
-
-    if keys[pygame.K_TAB] and (keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]):
-        open_settings = True
-        break
 
     if keys[pygame.K_SPACE]:
         if paused:
