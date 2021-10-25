@@ -19,6 +19,44 @@ width, height = pygame.display.get_surface().get_size()
 font = pygame.font.SysFont(None, 50)
 editor_font = pygame.font.SysFont(None, floor(height / 15))
 
+close_game = False
+open_settings = False
+leave_home = False
+
+# home
+start_text = font.render("Play", True, "black")
+settings_text = font.render("Settings", True, "black")
+start_button = pygame.Rect(width / 2 - settings_text.get_width() / 2, height / 2, settings_text.get_width() + 10, settings_text.get_height() + 10)
+settings_button = pygame.Rect(width / 2 - settings_text.get_width() / 2, height / 2 + settings_text.get_height() + 15, settings_text.get_width() + 10, settings_text.get_height() + 10)
+while not leave_home:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            leave_home = True
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                leave_home = True
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if start_button.collidepoint(event.pos):
+                leave_home = True
+            elif settings_button.collidepoint(event.pos):
+                leave_home = True
+                close_game = True
+                open_settings = True
+
+    game.fill("black")
+
+    game_name = font.render("Pong", True, "white")
+    game.blit(game_name, (width / 5 - game_name.get_width() / 2, height / 5))
+
+    pygame.draw.rect(game, "white", start_button, 0, 4)
+    game.blit(start_text, (width / 2 - start_text.get_width() / 2 + 5, height / 2 + 5))
+
+    pygame.draw.rect(game, "white", settings_button, 0, 4)
+    game.blit(settings_text, (width / 2 - settings_text.get_width() / 2 + 5, height / 2 + settings_text.get_height() + 20))
+
+    pygame.display.flip()
+    clock.tick(10)
+
 # Settings
 speed = settings.ball.speed
 radius = settings.ball.radius
@@ -28,8 +66,6 @@ p1_paddle_height = settings.paddle.p1.height
 p2_paddle_speed = settings.paddle.p2.speed
 p2_paddle_width = settings.paddle.p2.width
 p2_paddle_height = settings.paddle.p2.height
-open_settings = False
-close_game = False
 
 # Audio
 audio = settings.audio
