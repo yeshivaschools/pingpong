@@ -211,39 +211,6 @@ while not close_game:
     clock.tick(60)
 
 if open_settings:
-    def char_check(data_setting, chars):
-        chars = chars.split(",")
-        if data_setting == "window" and len(chars) == 2 and chars[0].isnumeric() and chars[1].isnumeric():
-            arg1 = int(chars[0])
-            arg2 = int(chars[1])
-            if arg1 >= 500 and arg1 <= 20000 and arg2 >= 300 and arg2 <= 1200:
-                return "green"
-        elif data_setting == "robot" and len(chars) == 2 and chars[0].isnumeric() and chars[1].isnumeric():
-            arg1 = int(chars[0])
-            arg2 = int(chars[1])
-            if arg1 >= 0 and arg1 <= 2 and arg2 >= 1 and arg2 <= 3:
-                return "green"
-        elif data_setting == "ball" and len(chars) == 2 and chars[0].isnumeric() and chars[1].isnumeric():
-            arg1 = int(chars[0])
-            arg2 = int(chars[1])
-            if arg1 >= 1 and arg1 <= 12 and arg2 >= 2 and arg2 <= 400:
-                return "green"
-        elif data_setting == "p1" and len(chars) == 3 and chars[0].isnumeric() and chars[1].isnumeric() and chars[2].isnumeric():
-            arg1 = int(chars[0])
-            arg2 = int(chars[1])
-            arg3 = int(chars[2])
-            if arg1 >= 1 and arg1 <= 250 and arg2 >= 1 and arg2 <= 500 and arg3 >= 1 and arg3 <= 50:
-                return "green"
-        elif data_setting == "p2" and len(chars) == 3 and chars[0].isnumeric() and chars[1].isnumeric() and chars[2].isnumeric():
-            arg1 = int(chars[0])
-            arg2 = int(chars[1])
-            arg3 = int(chars[2])
-            if arg1 >= 1 and arg1 <= 250 and arg2 >= 1 and arg2 <= 500 and arg3 >= 1 and arg3 <= 50:
-                return "green"
-        else:
-            return "yellow"
-        return "red"
-
     inputs = [
         { "type": "window", "text": f"{width},{height}", "description": [ "w", "h" ] },
         { "type": "robot", "text": f"{settings.robotPlayer},{settings.robotView}", "description": [ "p", "v" ] },
@@ -268,6 +235,30 @@ if open_settings:
         }
 
         line += 1
+
+    setting_constraints = {
+        "window": [[500, 20000], [300, 1200]],
+        "robot": [[0, 2], [1, 3]],
+        "ball": [[0, 12], [2, 400]],
+        "p1": [[1, 250], [1, 500], [1, 50]],
+        "p2": [[1, 250], [1, 500], [1, 50]]
+    }
+
+    def char_check(data_setting, chars):
+        chars = list(map(int, chars.strip(",").split(",")))
+        
+        if data_setting in setting_constraints:
+            line = 0
+            for i in setting_constraints[data_setting]:
+                if len(chars) > line:
+                    if chars[line] < i[0] or chars[line] > i[1]:
+                        return "red"
+                else:
+                    return "yellow"
+                line += 1
+            return "green"
+        else:
+            return "yellow"
 
     allowed_chars = [ pygame.K_0, pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6, pygame.K_7, pygame.K_8, pygame.K_9, pygame.K_COMMA, pygame.K_BACKSPACE ]
 
