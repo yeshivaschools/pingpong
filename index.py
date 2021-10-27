@@ -245,20 +245,22 @@ if open_settings:
     }
 
     def char_check(data_setting, chars):
-        chars = list(map(int, chars.strip(",").split(",")))
-        
-        if data_setting in setting_constraints:
-            line = 0
-            for i in setting_constraints[data_setting]:
-                if len(chars) > line:
-                    if chars[line] < i[0] or chars[line] > i[1]:
-                        return "red"
-                else:
-                    return "yellow"
-                line += 1
-            return "green"
+        if chars:
+            chars = list(map(int, chars.strip(",").split(",")))
+            if data_setting in setting_constraints:
+                line = 0
+                for i in setting_constraints[data_setting]:
+                    if len(chars) > line:
+                        if chars[line] < i[0] or chars[line] > i[1]:
+                            return "red"
+                    else:
+                        return "yellow"
+                    line += 1
+                return "green"
+            else:
+                return "yellow"
         else:
-            return "yellow"
+            return "red"
 
     allowed_chars = [ pygame.K_0, pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6, pygame.K_7, pygame.K_8, pygame.K_9, pygame.K_COMMA, pygame.K_BACKSPACE ]
 
