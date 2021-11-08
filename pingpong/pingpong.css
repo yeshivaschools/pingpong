@@ -1,0 +1,10 @@
+body {
+    background-color: #2B3245;
+}
+
+iframe {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
