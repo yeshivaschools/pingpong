@@ -71,7 +71,6 @@ if audio:
     pygame.mixer.music.load("effects.mp3")
     pygame.mixer.music.set_volume(settings.volume)
 
-serve = 0
 p1_position = (height / 2) - (p1_paddle_height / 2)
 p2_position = (height / 2) - (p2_paddle_height / 2)
 ball_position = [width / 2, height / 2]
@@ -138,23 +137,11 @@ while not close_game:
         p2_score += 1
         ball_position = [width / 2, height / 2]
         vertical_speed = speed
-
-        if serve:
-            serve = 0
-        else:
-            serve = 1
-        ball_x_direction = serve
         paused = True
     if ball_position[0] >= width:
         p1_score += 1
         ball_position = [width / 2, height / 2]
         vertical_speed = speed
-
-        if serve:
-            serve = 0
-        else:
-            serve = 1
-        ball_x_direction = serve
         paused = True
 
     if ball_position[0] <= 5 + p1_paddle_width + radius / 2 and p1_position - radius / 2 <= ball_position[1] and p1_position + p1_paddle_height + radius / 2 >= ball_position[1] and speed < 0:
