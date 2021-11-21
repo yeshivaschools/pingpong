@@ -128,21 +128,18 @@ while not close_game:
         ball_position[1] += vertical_speed
         ball_position[0] += speed
 
-    if ball_position[1] <= radius / 2:
-        vertical_speed *= -1
-    if ball_position[1] >= height - radius / 2:
+    if ball_position[1] <= radius / 2 or ball_position[1] >= height - radius / 2:
         vertical_speed *= -1
 
-    if ball_position[0] <= 0:
-        p2_score += 1
+    if ball_position[0] <= 0 or ball_position[0] >= width:
         ball_position = [width / 2, height / 2]
         vertical_speed = speed
         paused = True
-    if ball_position[0] >= width:
-        p1_score += 1
-        ball_position = [width / 2, height / 2]
-        vertical_speed = speed
-        paused = True
+        
+        if ball_position[0] <= 0:
+            p1_score += 1
+        else:
+            p2_score += 1
 
     if ball_position[0] <= 5 + p1_paddle_width + radius / 2 and p1_position - radius / 2 <= ball_position[1] and p1_position + p1_paddle_height + radius / 2 >= ball_position[1] and speed < 0:
             speed *= -1
