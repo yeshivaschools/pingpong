@@ -71,12 +71,9 @@ if audio:
     pygame.mixer.music.load("effects.mp3")
     pygame.mixer.music.set_volume(settings.volume)
 
-serve = 0
 p1_position = (height / 2) - (p1_paddle_height / 2)
 p2_position = (height / 2) - (p2_paddle_height / 2)
 ball_position = [width / 2, height / 2]
-ball_x_direction = 0  # 0 for left, 1 for right
-ball_y_direction = randint(0, 1)  # 0 for down, 1 for up
 vertical_speed = speed
 paused = True
 
@@ -128,68 +125,47 @@ while not close_game:
             p1_position += p1_paddle_speed
 
     if not paused:
-        if ball_y_direction:
-            ball_position[1] -= vertical_speed
-        else:
-            ball_position[1] += vertical_speed
-
-        if ball_x_direction:
-            ball_position[0] -= speed
-        else:
-            ball_position[0] += speed
+        ball_position[1] += vertical_speed
+        ball_position[0] += speed
 
     if ball_position[1] <= radius / 2:
-        ball_y_direction = 0
+        vertical_speed *= -1
     if ball_position[1] >= height - radius / 2:
-        ball_y_direction = 1
+        vertical_speed *= -1
 
     if ball_position[0] <= 0:
         p2_score += 1
-        ball_y_direction = randint(0, 1)
         ball_position = [width / 2, height / 2]
         vertical_speed = speed
-
-        if serve:
-            serve = 0
-        else:
-            serve = 1
-        ball_x_direction = serve
         paused = True
     if ball_position[0] >= width:
         p1_score += 1
-        ball_y_direction = randint(0, 1)
         ball_position = [width / 2, height / 2]
         vertical_speed = speed
-
-        if serve:
-            serve = 0
-        else:
-            serve = 1
-        ball_x_direction = serve
         paused = True
 
-    if ball_position[0] <= 5 + p1_paddle_width + radius / 2 and p1_position - radius / 2 <= ball_position[1] and p1_position + p1_paddle_height + radius / 2 >= ball_position[1]:
-        ball_x_direction = 0
-        if ball_position[1] >= p1_position - radius / 2 and ball_position[1] <= p1_position - radius / 2 + 15:
+    if ball_position[0] <= 5 + p1_paddle_width + radius / 2 and p1_position - radius / 2 <= ball_position[1] and p1_position + p1_paddle_height + radius / 2 >= ball_position[1] and speed < 0:
+        speed *= -1
+        if ball_position[1] >= p1_position - radius / 2 and ball_position[1] <= p1_position - radius / 2 + 15 and vertical_speed > 0:
             vertical_speed += 1
-            ball_y_direction = 1
-        elif ball_position[1] <= p1_position + p1_paddle_height + radius / 2 and ball_position[1] >= p1_position + p1_paddle_height + radius / 2 - 15:
-            vertical_speed += 1
-            ball_y_direction = 0
+            vertical_speed *= -1
+        elif ball_position[1] <= p1_position + p1_paddle_height + radius / 2 and ball_position[1] >= p1_position + p1_paddle_height + radius / 2 - 15 and vertical_speed < 0:
+            vertical_speed -= 1
+            vertical_speed *= -1
         else:
             vertical_speed -= .25
         if audio:
             pygame.mixer.music.play()
-    if ball_position[0] >= width - 5 - p2_paddle_width - radius / 2 and p2_position - radius / 2 <= ball_position[1] and p2_position + p2_paddle_height + radius / 2 >= ball_position[1]:
-        ball_x_direction = 1
-        if ball_position[1] >= p2_position - radius / 2 and ball_position[1] <= p2_position - radius / 2 + 15:
+    if ball_position[0] >= width - 5 - p2_paddle_width - radius / 2 and p2_position - radius / 2 <= ball_position[1] and p2_position + p2_paddle_height + radius / 2 >= ball_position[1] and speed > 0:
+        speed *= -1
+        if ball_position[1] >= p2_position - radius / 2 and ball_position[1] <= p2_position - radius / 2 + 15 and vertical_speed > 0:
             vertical_speed += 1
-            ball_y_direction = 1
-        elif ball_position[1] <= p2_position + p2_paddle_height + radius / 2 and ball_position[1] >= p2_position + p2_paddle_height + radius / 2 - 15:
-            vertical_speed += 1
-            ball_y_direction = 0
+            vertical_speed *= -1
+        elif ball_position[1] <= p2_position + p2_paddle_height + radius / 2 and ball_position[1] >= p2_position + p2_paddle_height + radius / 2 - 15 and vertical_speed < 0:
+            vertical_speed -= 1
+            vertical_speed *= -1
         else:
-            vertical_speed -= .25
+            vertical_speed += .25
         if audio:
             pygame.mixer.music.play()
 
